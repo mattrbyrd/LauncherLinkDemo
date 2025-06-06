@@ -5,9 +5,12 @@ function uuidv4() {
     });
 }
 
+var name = prompt("Please enter your first and last name")
+var email = prompt("Please enter your email address")
+
 var ccLauncherConfig = {
-    studentId: uuidv4(),
-    studentName: "Unknown User",
+    studentId: email,
+    studentName: name,
     postStudentData: false,
     postUrl: ''
 };
