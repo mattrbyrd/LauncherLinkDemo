@@ -5,12 +5,9 @@ function uuidv4() {
     });
 }
 
-var name = prompt("Please enter your first and last name")
-var email = prompt("Please enter your email address")
-
 var ccLauncherConfig = {
-    studentId: email,
-    studentName: name,
+    studentId: prompt("Please enter your email address"),
+    studentName: prompt("Please enter your first and last name"),
     postStudentData: false,
     postUrl: ''
 };
