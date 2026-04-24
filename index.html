@@ -12,6 +12,58 @@
     <script src="config.js?v=3.2" type="text/javascript"></script>
     <script src="https://demo.contentcontroller.com/launcherlink/launcherinit.js?v=3.2" type="text/javascript"></script>
     <script src="https://demo.contentcontroller.com/launcherlink/ssla.min.js?v=3.2" type="text/javascript"></script>
+    <script>
+(function() {
+    // 1. Configuration
+    const authorizedPortal = "mbyrd27.github.io";
+    const authorizedProxy = "demo.contentcontroller.com";
+
+    // 2. Identification Logic
+    let isAuthorized = false;
+    const ref = document.referrer.toLowerCase();
+
+    try {
+        // Stages of verification:
+        // A: Check Chrome/Safari ancestorOrigins
+        if (window.location.ancestorOrigins) {
+            const ancestors = Array.from(window.location.ancestorOrigins);
+            if (ancestors.some(d => d.includes(authorizedPortal))) {
+                isAuthorized = true;
+            }
+        } 
+        // B: Check if parent and top are different (indicates nested frames)
+        else if (window.parent !== window.top) {
+            isAuthorized = true;
+        }
+        // C: Check if we are allowed to see window.top (same-domain/copy-paste)
+        // If this succeeds and the URL doesn't match the portal, it's a fail.
+        else if (window.top.location.href.includes(authorizedPortal)) {
+            isAuthorized = true;
+        }
+    } catch (e) {
+        // D: If a SecurityError occurs, it's a cross-origin grandparent (The Portal)
+        // Verify the immediate parent is the trusted proxy
+        if (ref.includes(authorizedProxy)) {
+            isAuthorized = true;
+        }
+    }
+
+    // 3. Enforcement
+    if (!isAuthorized) {
+        // Replace the entire page content immediately
+        document.documentElement.innerHTML = `
+            <body style="font-family:sans-serif; display:flex; justify-content:center; align-items:center; height:100vh; margin:0; background:#f9f9f9;">
+                <div style="text-align:center; padding:20px; border:2px solid #ff4d4d; border-radius:8px; background:#fff;">
+                    <h1 style="color:#ff4d4d;">Oops! Unauthorized Launch</h1>
+                    <p>This content must be launched through the official learning portal.</p>
+                </div>
+            </body>`;
+        // Stop all other scripts from running
+        window.stop(); 
+        throw new Error("Execution halted: Unauthorized Source");
+    }
+})();
+</script>
 </head>
 
 <body onload="prepareLaunch(ccAppPrefix, ccPackageToken)" onbeforeunload="ssla.finish()" class="hide-menu hide-toc">
