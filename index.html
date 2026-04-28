@@ -12,43 +12,7 @@
     <script src="config.js?v=3.2" type="text/javascript"></script>
     <script src="https://demo.contentcontroller.com/launcherlink/launcherinit.js?v=3.2" type="text/javascript"></script>
     <script src="https://demo.contentcontroller.com/launcherlink/ssla.min.js?v=3.2" type="text/javascript"></script>
-    <script>
-(function() {
-    // 1. Setup
-    const authorizedPortal = "mbyrd27.github.io";
-    const authorizedProxy = "demo.contentcontroller.com";
-    const ref = document.referrer.toLowerCase();
-    let isAuthorized = false;
-
-    // 2. Logic: We verify if the user came from the portal or the proxy
-    // If you launch from the portal, the referrer will be mbyrd27.github.io.
-    // If the proxy redirects you, the referrer will be demo.contentcontroller.com.
-    if (ref.includes(authorizedPortal) || ref.includes(authorizedProxy)) {
-        isAuthorized = true;
-    }
-
-    // 3. Stage 2: Anti-Bypass check
-    // If someone copy-pastes the link, the referrer will be EMPTY.
-    if (ref === "") {
-        isAuthorized = false;
-    }
-
-    // 4. Enforcement
-    if (!isAuthorized) {
-        document.documentElement.innerHTML = `
-            <body style="font-family:sans-serif; display:flex; justify-content:center; align-items:center; height:100vh; margin:0; background:#f9f9f9;">
-                <div style="text-align:center; padding:20px; border:2px solid #ff4d4d; border-radius:8px; background:#fff;">
-                    <h1 style="color:#ff4d4d;">Oops! Unauthorized Launch</h1>
-                    <p>This content must be launched through the official learning portal.</p>
-                </div>
-            </body>`;
-        window.stop(); 
-        throw new Error("Execution halted: Unauthorized Source");
-    }
     
-    // If we get here, it's authorized. The rest of the page (SCORM/TinCan) will load.
-})();
-</script>
 </head>
 
 <body onload="prepareLaunch(ccAppPrefix, ccPackageToken)" onbeforeunload="ssla.finish()" class="hide-menu hide-toc">
