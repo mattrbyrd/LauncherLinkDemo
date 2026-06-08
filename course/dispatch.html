@@ -39,15 +39,20 @@
             WriteToDebug("Unloaded from DispatchUnload");
         }
     </script>
+
+    <style>
+        #dispatch_content_frame { display: block; }
+    </style>
 </head>
 
-<frameset id="dispatch_frameset" rows="0,*" frameborder="0" framespacing="0" border="0" onload="DispatchStart()" onunload="DispatchUnload()">
-    <!-- We set the src to blank.html to avoid security warnings in IE6 / IE7 when launching in HTTPS -->
-    <frame id="dispatch_content_frame" name="dispatch_content_frame" src="blank.html">
-    <frame id="dispatch_loading_frame" name="dispatch_loading_frame" src="blank.html">
-</frameset>
-<noframes>
-    Your browser must be able to view frames for this content to display.
-</noframes>
+<body id="dispatch_container" onload="DispatchStart()" onpagehide="DispatchUnload()" style="margin: 0;">
+    <!-- IFrame for the main content -->
+    <iframe id="dispatch_content_frame" name="dispatch_content_frame" src="blank.html" style="width: 100%; height: 100vh; border: none;" allowfullscreen allow="autoplay *; camera *; display-capture *; fullscreen *; microphone *; clipboard-read *; clipboard-write *;"></iframe>
 
+    <!-- IFrame for loading content -->
+    <iframe id="dispatch_loading_frame" name="dispatch_loading_frame" src="blank.html" style="display: none;"></iframe>
+    <noscript>
+        Your browser must have JavaScript enabled to view this content.
+    </noscript>
+</body>
 </html>
