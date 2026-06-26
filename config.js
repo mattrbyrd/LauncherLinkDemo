@@ -6,8 +6,8 @@ function uuidv4() {
 }
 
 var ccLauncherConfig = {
-    studentId: prompt("What is your email address?),
-    studentName: prompt("What is your name?"),
+    studentId: uuidv4(),
+    studentName: "Unknown User",
     postStudentData: false,
     postUrl: ''
 };
